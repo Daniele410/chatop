@@ -3,6 +3,7 @@ package com.dan.chatop.model;
 import com.dan.chatop.util.Password;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.Date;
 import java.util.List;
@@ -15,9 +16,11 @@ public class User {
     private Long id;
 
     @Column(unique = true, nullable = false, length = 255)
+    @NotNull(message = "email cannot be null")
     private String email;
 
     @Column(length = 255)
+    @NotNull(message = "name cannot be null")
     private String name;
 
     @Column(length = 255)
@@ -26,15 +29,21 @@ public class User {
     private String password;
 
     @Column(name = "created_at")
-    private Date createdAt;
+    private Date createdAt = Date.from(java.time.Instant.now());
 
     @Column(name = "updated_at")
-    private Date updatedAt;
+    private Date updatedAt= Date.from(java.time.Instant.now());;
 
     @OneToMany(mappedBy = "user")
     private List<Message> messages;
 
     public User() {
+    }
+
+    public User(String email, String name, String password) {
+        this.email = email;
+        this.name = name;
+        this.password = password;
     }
 
     public User(Long id, String email, String name, String password, Date createdAt, Date updatedAt, List<Message> messages) {

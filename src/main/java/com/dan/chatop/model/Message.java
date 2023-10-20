@@ -24,10 +24,10 @@ public class Message {
     private String message;
 
     @Column(name = "created_at")
-    private Date createdAt;
+    private Date createdAt= Date.from(java.time.Instant.now());
 
     @Column(name = "updated_at")
-    private Date updatedAt;
+    private Date updatedAt= Date.from(java.time.Instant.now());
 
     public Message() {
     }

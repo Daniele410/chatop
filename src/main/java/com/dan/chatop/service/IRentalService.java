@@ -8,7 +8,13 @@ import java.util.List;
 public interface IRentalService{
     List<Rental> getAllRentals();
 
-    Rental getRentalById(Long id);
+    Rental getRentalByUserId(Long id);
 
     Rental addRental(Rental rental);
+
+    boolean existsById(Long id);
+
+    Rental updateRental(Rental rental);
+
+    void deleteRental(Long id);
 }
