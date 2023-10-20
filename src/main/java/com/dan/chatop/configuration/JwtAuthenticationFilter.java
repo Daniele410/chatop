@@ -1,6 +1,5 @@
 package com.dan.chatop.configuration;
 
-import com.dan.chatop.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

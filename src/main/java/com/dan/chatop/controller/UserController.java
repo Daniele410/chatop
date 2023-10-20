@@ -1,6 +1,5 @@
 package com.dan.chatop.controller;
 
-import com.dan.chatop.dto.UserRegistrationDto;
 import com.dan.chatop.model.User;
 import com.dan.chatop.service.IUserService;
 import org.apache.logging.log4j.LogManager;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
 @CrossOrigin(origins = "*")
@@ -22,7 +20,6 @@ public class UserController {
 
     @Autowired
     IUserService userService;
-
 
 
     @GetMapping("/user")
@@ -37,11 +34,11 @@ public class UserController {
 
 
 
-    @PostMapping("/register")
+    /*@PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody UserRegistrationDto user) {
-        log.info("register user with email: " + user.getEmail() + " and name: " + user.getName() + " and password: " + user.getPassword() + "");
+        log.info("register user with email: " + user.getEmail() + " and name: " + user.getName() + " and password: " + user.getPassword());
         return new ResponseEntity<>(userService.registerUser(user), CREATED );
-    }
+    }*/
 
     @PostMapping("/login")
     public void login(@RequestBody User user) {

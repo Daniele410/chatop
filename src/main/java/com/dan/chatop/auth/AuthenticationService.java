@@ -3,7 +3,7 @@ package com.dan.chatop.auth;
 import com.dan.chatop.model.Role;
 import com.dan.chatop.model.User;
 import com.dan.chatop.repository.UserRepository;
-import com.dan.chatop.service.JwtService;
+import com.dan.chatop.configuration.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,13 +21,13 @@ public class AuthenticationService {
 
     public AuthenticationResponse register(RegisterRequest request) {
         var user = User.builder()
-                .name(request.getFirstName())
+                .name(request.getName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER)
                 .build();
         userRepository.save(user);
-        var jwtToken = jwtService.generateToken(user);
+        var jwtToken = jwtService.generateToken(user.getEmail());
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
@@ -41,7 +41,7 @@ public class AuthenticationService {
                 )
         );
         var user = userRepository.findByEmail(request.getEmail()).orElseThrow();
-        var jwtToken = jwtService.generateToken(user);
+        var jwtToken = jwtService.generateToken(user.getUsername());
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();

@@ -15,13 +15,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "Users")
-public class User  implements UserDetails {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -43,7 +44,8 @@ public class User  implements UserDetails {
     private Date createdAt = Date.from(java.time.Instant.now());
 
     @Column(name = "updated_at")
-    private Date updatedAt= Date.from(java.time.Instant.now());;
+    private Date updatedAt = Date.from(java.time.Instant.now());
+    ;
 
     @OneToMany(mappedBy = "user")
     private List<Message> messages;
@@ -63,6 +65,7 @@ public class User  implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
     }
+
     @Override
     public String getPassword() {
         return password;

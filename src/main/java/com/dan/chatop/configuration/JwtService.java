@@ -1,4 +1,4 @@
-package com.dan.chatop.service;
+package com.dan.chatop.configuration;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -12,7 +12,6 @@ import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.Function;
 
 @Service
@@ -23,21 +22,23 @@ public class JwtService {
         return extractClaim(token, Claims::getSubject);
     }
 
-    public String generateToken(UserDetails userDetails) {
-        return generateToken(new HashMap<>(), userDetails);
+    public String generateToken(String username) {
+
+        Map<String, Object> claims = new HashMap<>();
+        return createToken(claims, username);
     }
 
-    public String generateToken(
-            Map<String, Objects> extraClaims,
-            UserDetails userDetails
+    public String createToken(
+            Map<String, Object> extraClaims,
+            String username
     ) {
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
-                .setSubject(userDetails.getUsername())
+                .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
-                .signWith(getSignInKey(), SignatureAlgorithm.ES256)
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
 
     }
