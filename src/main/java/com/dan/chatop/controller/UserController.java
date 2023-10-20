@@ -16,13 +16,25 @@ import static org.springframework.http.HttpStatus.OK;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/api/auth")
-public class AuthController {
+public class UserController {
 
-    private static final Logger log = LogManager.getLogger("AuthController");
+    private static final Logger log = LogManager.getLogger("LoginController");
 
     @Autowired
     IUserService userService;
+
+
+
+    @GetMapping("/user")
+    public String getUser() {
+        return "Welcome, User!";
+    }
+
+    @GetMapping("/admin")
+    public String getAdmin() {
+        return "Welcome, Admin!";
+    }
+
 
 
     @PostMapping("/register")
@@ -64,4 +76,5 @@ public class AuthController {
             return new ResponseEntity<>("User with id " + id + " was deleted", OK);
         }
     }
+
 }

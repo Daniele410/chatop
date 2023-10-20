@@ -4,6 +4,8 @@ import com.dan.chatop.dto.UserRegistrationDto;
 import com.dan.chatop.exception.ResourceNotFoundException;
 import com.dan.chatop.model.User;
 import com.dan.chatop.repository.UserRepository;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-
+@AllArgsConstructor
+@NoArgsConstructor
 @Service
 public class UserServiceImpl implements IUserService {
 
@@ -27,16 +30,6 @@ public class UserServiceImpl implements IUserService {
         return userRepository.findAll();
     }
 
-  /*  @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-        User user = userRepository.findByName(username);
-        if (user == null) {
-            throw new UsernameNotFoundException("Invalid username and password.");
-        }
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),
-                Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
-    }*/
 
     @Override
     public User getUserById(Long id) {
@@ -101,6 +94,6 @@ public class UserServiceImpl implements IUserService {
         userDto.setName(user.getName());
         userDto.setCreatedAt(user.getCreatedAt());
         userDto.setUpdatedAt(user.getUpdatedAt());
-        return userRepository.findById(id).get();
+        return userRepository.findById(id).orElseThrow();
     }
 }

@@ -4,6 +4,10 @@ import com.dan.chatop.util.Password;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,7 +15,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "Users")
 public class User  implements UserDetails {
@@ -44,48 +51,13 @@ public class User  implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public User() {
-    }
-
     public User(String email, String name, String password) {
         this.email = email;
         this.name = name;
         this.password = password;
+        this.role = Role.USER;
     }
 
-    public User(Long id, String email, String name, String password, Date createdAt, Date updatedAt, List<Message> messages) {
-        this.id = id;
-        this.email = email;
-        this.name = name;
-        this.password = password;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.messages = messages;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
