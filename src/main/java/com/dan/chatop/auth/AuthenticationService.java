@@ -1,18 +1,30 @@
 package com.dan.chatop.auth;
 
+import com.dan.chatop.dto.UserResponseDTO;
+import com.dan.chatop.exception.ResourceNotFoundException;
 import com.dan.chatop.model.Role;
 import com.dan.chatop.model.User;
 import com.dan.chatop.repository.UserRepository;
 import com.dan.chatop.configuration.JwtService;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.text.SimpleDateFormat;
 
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
+
+    private static final Logger log = LogManager.getLogger("AuthenticationService");
+
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -26,11 +38,18 @@ public class AuthenticationService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER)
                 .build();
-        userRepository.save(user);
+        if (userRepository.existsByEmail(user.getEmail())) {
+            log.warn("email: "+ user.getEmail() +" is present in Database");
+            throw new ResourceNotFoundException("User with email " + user.getEmail() + " is present in Database");
+        } else {
+            userRepository.save(user);
+
+
         var jwtToken = jwtService.generateToken(user.getEmail());
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
+        }
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
@@ -46,5 +65,36 @@ public class AuthenticationService {
                 .token(jwtToken)
                 .build();
     }
+
+    public UserResponseDTO me(String userEmail) {
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new ResourceNotFoundException("User with email " + userEmail + " not found"));
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        UserResponseDTO response = new UserResponseDTO();
+        response.setId(user.getId());
+        response.setName(user.getName());
+        response.setEmail(user.getEmail());
+        response.setCreated_at(dateFormat.format(user.getCreatedAt()));
+        response.setUpdated_at(dateFormat.format(user.getUpdatedAt()));
+
+        return response;
+    }
+
+     public String getAuthenticatedUserEmail() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return null;
+        }
+
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof UserDetails) {
+            return ((UserDetails) principal).getUsername();
+        } else {
+            return authentication.getName();
+        }
+    }
+
 }
 

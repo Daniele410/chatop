@@ -13,7 +13,7 @@ import java.util.List;
 import static org.springframework.http.HttpStatus.OK;
 
 @CrossOrigin(origins = "*")
-@RestController
+@RestController("/api")
 public class UserController {
 
     private static final Logger log = LogManager.getLogger("LoginController");
@@ -34,11 +34,6 @@ public class UserController {
 
 
 
-    /*@PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody UserRegistrationDto user) {
-        log.info("register user with email: " + user.getEmail() + " and name: " + user.getName() + " and password: " + user.getPassword());
-        return new ResponseEntity<>(userService.registerUser(user), CREATED );
-    }*/
 
     @PostMapping("/login")
     public void login(@RequestBody User user) {

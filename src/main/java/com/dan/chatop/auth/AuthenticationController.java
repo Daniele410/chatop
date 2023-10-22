@@ -1,11 +1,11 @@
 package com.dan.chatop.auth;
 
+import com.dan.chatop.dto.UserResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @RequiredArgsConstructor
@@ -16,11 +16,24 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) {
-        return ResponseEntity.ok(authenticationService.register(request));
+        return new ResponseEntity<>(authenticationService.register(request), OK);
     }
 
-    @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
-        return ResponseEntity.ok(authenticationService.authenticate(request));
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody AuthenticationRequest request) {
+        return new ResponseEntity<> (authenticationService.authenticate(request).getToken(), OK);
     }
+
+    @GetMapping("/me")
+    public ResponseEntity<UserResponseDTO> me() {
+        String userEmail = authenticationService.getAuthenticatedUserEmail();
+        if (userEmail == null) {
+            throw new IllegalStateException("No authenticated user found");
+        }
+        UserResponseDTO responseDTO = authenticationService.me(userEmail);
+        return new ResponseEntity<> (responseDTO, OK);
+    }
+
+
+
 }
