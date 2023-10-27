@@ -50,7 +50,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public User updateUser(Long userId, User updatedUser) {
+    public User updateUser(Long userId, User updatedUser) throws ResourceNotFoundException {
         log.info("update user");
         if (userRepository.existsById(userId)) {
             updatedUser.setId(userId);
@@ -64,7 +64,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public void deleteUser(Long userId) {
+    public void deleteUser(Long userId) throws ResourceNotFoundException {
         log.info("delete user");
         if (userRepository.existsById(userId)) {
             userRepository.deleteById(userId);

@@ -1,6 +1,7 @@
 package com.dan.chatop.service;
 
 import com.dan.chatop.dto.UserRegistrationDto;
+import com.dan.chatop.exception.ResourceNotFoundException;
 import com.dan.chatop.model.User;
 
 import java.util.List;
@@ -18,9 +19,9 @@ public interface IUserService /*extends UserDetailsService */{
 
     User registerUser(UserRegistrationDto registrationDto);
 
-    User updateUser(Long userId, User updatedUser);
+    User updateUser(Long userId, User updatedUser) throws ResourceNotFoundException;
 
-    void deleteUser(Long id);
+    void deleteUser(Long id) throws ResourceNotFoundException;
 
     boolean existsById(Long id);
 

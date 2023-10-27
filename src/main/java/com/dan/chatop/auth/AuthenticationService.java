@@ -1,14 +1,13 @@
 package com.dan.chatop.auth;
 
+import com.dan.chatop.configuration.JwtService;
 import com.dan.chatop.dto.UserResponseDTO;
 import com.dan.chatop.exception.ResourceNotFoundException;
 import com.dan.chatop.model.Role;
 import com.dan.chatop.model.User;
 import com.dan.chatop.repository.UserRepository;
-import com.dan.chatop.configuration.JwtService;
 import lombok.RequiredArgsConstructor;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,11 +18,10 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
-
-    private static final Logger log = LogManager.getLogger("AuthenticationService");
 
 
     private final UserRepository userRepository;
@@ -31,7 +29,7 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    public AuthenticationResponse register(RegisterRequest request) {
+    public AuthenticationResponse register(RegisterRequest request) throws Exception {
         var user = User.builder()
                 .name(request.getName())
                 .email(request.getEmail())
@@ -39,16 +37,15 @@ public class AuthenticationService {
                 .role(Role.USER)
                 .build();
         if (userRepository.existsByEmail(user.getEmail())) {
-            log.warn("email: "+ user.getEmail() +" is present in Database");
-            throw new ResourceNotFoundException("User with email " + user.getEmail() + " is present in Database");
+            log.warn("email: " + user.getEmail() + " is present in Database");
+            throw new Exception("User with email " + user.getEmail() + " is present in Database");
         } else {
             userRepository.save(user);
 
-
-        var jwtToken = jwtService.generateToken(user.getEmail());
-        return AuthenticationResponse.builder()
-                .token(jwtToken)
-                .build();
+            var jwtToken = jwtService.generateToken(user.getEmail());
+            return AuthenticationResponse.builder()
+                    .token(jwtToken)
+                    .build();
         }
     }
 
@@ -60,13 +57,13 @@ public class AuthenticationService {
                 )
         );
         var user = userRepository.findByEmail(request.getEmail()).orElseThrow();
-        var jwtToken = jwtService.generateToken(user.getUsername());
+        var jwtToken = jwtService.generateToken(user.getEmail());
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
     }
 
-    public UserResponseDTO me(String userEmail) {
+    public UserResponseDTO me(String userEmail) throws ResourceNotFoundException {
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new ResourceNotFoundException("User with email " + userEmail + " not found"));
 
@@ -75,13 +72,13 @@ public class AuthenticationService {
         response.setId(user.getId());
         response.setName(user.getName());
         response.setEmail(user.getEmail());
-        response.setCreated_at(dateFormat.format(user.getCreatedAt()));
-        response.setUpdated_at(dateFormat.format(user.getUpdatedAt()));
+        response.setCreated_at(user.getCreatedAt());
+        response.setUpdated_at(user.getUpdatedAt());
 
         return response;
     }
 
-     public String getAuthenticatedUserEmail() {
+    public String getAuthenticatedUserEmail() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null || !authentication.isAuthenticated()) {

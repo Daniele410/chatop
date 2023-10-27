@@ -1,5 +1,6 @@
 package com.dan.chatop.controller;
 
+import com.dan.chatop.exception.ResourceNotFoundException;
 import com.dan.chatop.model.User;
 import com.dan.chatop.service.IUserService;
 import org.apache.logging.log4j.LogManager;
@@ -54,13 +55,13 @@ public class UserController {
     }
 
     @PostMapping("/users/{id}")
-    public ResponseEntity<User> updateUser(@RequestBody User updateUser, @PathVariable Long id) {
+    public ResponseEntity<User> updateUser(@RequestBody User updateUser, @PathVariable Long id) throws ResourceNotFoundException {
         log.info("Update user whit id: " + id);
         return new ResponseEntity<>(userService.updateUser(id, updateUser), OK);
     }
 
     @DeleteMapping("/users/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<String> deleteUser(@PathVariable Long id) throws ResourceNotFoundException {
         if (!userService.existsById(id)) {
             return new ResponseEntity<>("User with id " + id + " was not present in database", OK);
         } else {
