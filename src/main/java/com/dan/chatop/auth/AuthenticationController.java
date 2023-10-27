@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.webjars.NotFoundException;
 
 import java.util.Optional;
 
@@ -44,7 +45,7 @@ public class AuthenticationController {
     public ResponseEntity<UserResponseDTO> me() throws ResourceNotFoundException {
         String userEmail = authenticationService.getAuthenticatedUserEmail();
         if (userEmail == null) {
-            throw new IllegalStateException("No authenticated user found");
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED) ;
         }
         UserResponseDTO responseDTO = authenticationService.me(userEmail);
         return new ResponseEntity<>(responseDTO, OK);

@@ -3,10 +3,7 @@ package com.dan.chatop.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
@@ -18,6 +15,7 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
 @Table(name = "Rentals")
 public class Rental {
@@ -26,34 +24,18 @@ public class Rental {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-/*
-    @Column(length = 255)
-*/
-/*
-    @NotBlank(message = "name is mandatory")
-*/
     private String name;
-/*
-    @NotNull(message = "surface is mandatory")
-*/
+
     private long surface;
-/*
-    @NotNull(message = "price is mandatory")
-*/
+
     private long price;
 
-    private String picture;
+    private byte[] picture;
 
-/*
-    @NotBlank(message = "description is mandatory")
-*/
-/*
-    @Column(length = 2000)
-*/
     private String description;
 
     @Column(name = "owner_id")
-    private Integer ownerId;
+    private Long ownerId;
 
     @Column(name = "created_at")
     private Date createdAt= Date.from(java.time.Instant.now());
@@ -64,7 +46,5 @@ public class Rental {
     @OneToMany(mappedBy = "rental")
     private List<Message> messages;
 
-    public Rental() {
-    }
 
 }

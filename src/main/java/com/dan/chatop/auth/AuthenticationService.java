@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Slf4j
 @Service
@@ -34,11 +35,13 @@ public class AuthenticationService {
                 .name(request.getName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
+                .createdAt(Date.from(java.time.Instant.now()))
+                .updatedAt(Date.from(java.time.Instant.now()))
                 .role(Role.USER)
                 .build();
         if (userRepository.existsByEmail(user.getEmail())) {
             log.warn("email: " + user.getEmail() + " is present in Database");
-            throw new Exception("User with email " + user.getEmail() + " is present in Database");
+            throw new ResourceNotFoundException("User with email " + user.getEmail() + " is present in Database");
         } else {
             userRepository.save(user);
 

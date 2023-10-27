@@ -1,8 +1,9 @@
 package com.dan.chatop.service;
 
+import com.dan.chatop.dto.RentalDto;
 import com.dan.chatop.model.Rental;
-import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface IRentalService{
@@ -10,7 +11,9 @@ public interface IRentalService{
 
     Rental getRentalByUserId(Long id);
 
-    Rental addRental(Rental rental);
+//    Rental addRental(Rental rental);
+
+    Rental addRental(RentalDto rentalDto) throws IOException;
 
     boolean existsById(Long id);
 

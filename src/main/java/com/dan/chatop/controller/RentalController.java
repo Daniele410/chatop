@@ -1,30 +1,47 @@
 package com.dan.chatop.controller;
 
+import com.dan.chatop.auth.AuthenticationService;
+import com.dan.chatop.dto.RentalDto;
 import com.dan.chatop.model.Rental;
+import com.dan.chatop.model.User;
+import com.dan.chatop.repository.UserRepository;
 import com.dan.chatop.service.IRentalService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.http.HttpStatus.*;
 
 @CrossOrigin(origins = "*")
+@Slf4j
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/rentals")
 public class RentalController {
 
-    private static final Logger log = LogManager.getLogger("RentalController");
 
-    @Autowired
-    IRentalService rentalService;
+    private final IRentalService rentalService;
+
+    private final AuthenticationService authenticationService;
+
+    private final UserRepository userRepository;
 
 
     @GetMapping()
     public ResponseEntity<List<Rental>> getAllRentals() {
+        String userEmail = authenticationService.getAuthenticatedUserEmail();
+        if (userEmail == null) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
         log.info("get all rentals");
         return new ResponseEntity<>(rentalService.getAllRentals(), OK);
     }
@@ -35,11 +52,18 @@ public class RentalController {
         return new ResponseEntity<>(rentalService.getRentalByUserId(id), OK);
     }
 
-    @PostMapping(consumes = "multipart/form-data")
-    public ResponseEntity<Rental> createRental(Rental rental) {
-        log.info("create new rentals:" + rental.getName());
-        return new ResponseEntity<>(rentalService.addRental(rental), CREATED);
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Rental> createRental(@ModelAttribute RentalDto rentalDto) throws IOException {
+//        log.info("create new rentals:" + rental.getName());
+
+        String userEmail = authenticationService.getAuthenticatedUserEmail();
+        if (userEmail == null) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        log.info("Adding new rental");
+        return new ResponseEntity<>(rentalService.addRental(rentalDto), CREATED);
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<Rental> updateRental(@PathVariable Long id, @RequestBody Rental rental) {
