@@ -2,6 +2,7 @@ package com.dan.chatop.service;
 
 import com.dan.chatop.dto.RentalDto;
 import com.dan.chatop.model.Rental;
+import com.dan.chatop.model.RentalResponse;
 
 import java.io.IOException;
 import java.util.List;

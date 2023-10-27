@@ -3,21 +3,18 @@ package com.dan.chatop.controller;
 import com.dan.chatop.auth.AuthenticationService;
 import com.dan.chatop.dto.RentalDto;
 import com.dan.chatop.model.Rental;
-import com.dan.chatop.model.User;
+import com.dan.chatop.model.RentalResponse;
 import com.dan.chatop.repository.UserRepository;
 import com.dan.chatop.service.IRentalService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 import static org.springframework.http.HttpStatus.*;
 
@@ -37,18 +34,22 @@ public class RentalController {
 
 
     @GetMapping()
-    public ResponseEntity<List<Rental>> getAllRentals() {
+    public ResponseEntity<RentalResponse> getAllRentals() {
         String userEmail = authenticationService.getAuthenticatedUserEmail();
+        List<Rental> rentals = rentalService.getAllRentals();
         if (userEmail == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         log.info("get all rentals");
-        return new ResponseEntity<>(rentalService.getAllRentals(), OK);
+        return ResponseEntity.ok(new RentalResponse(rentals));
     }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<Rental> getRentalsById(@PathVariable Long id) {
         log.info("get rentals by id");
+        String userEmail = authenticationService.getAuthenticatedUserEmail();
+
         return new ResponseEntity<>(rentalService.getRentalByUserId(id), OK);
     }
 

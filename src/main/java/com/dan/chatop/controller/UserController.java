@@ -13,7 +13,7 @@ import java.util.List;
 
 import static org.springframework.http.HttpStatus.OK;
 
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
 @RestController("/api")
 public class UserController {
 
@@ -22,31 +22,6 @@ public class UserController {
     @Autowired
     IUserService userService;
 
-
-    @GetMapping("/user")
-    public String getUser() {
-        return "Welcome, User!";
-    }
-
-    @GetMapping("/admin")
-    public String getAdmin() {
-        return "Welcome, Admin!";
-    }
-
-
-
-
-    @PostMapping("/login")
-    public void login(@RequestBody User user) {
-
-
-    }
-
-    @GetMapping("/me")
-    public User me() {
-
-        return new User();
-    }
 
     @GetMapping("/users")
     public ResponseEntity<List<User>> getAllUsers() {

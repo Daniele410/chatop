@@ -3,6 +3,7 @@ package com.dan.chatop.service;
 import com.dan.chatop.auth.AuthenticationService;
 import com.dan.chatop.dto.RentalDto;
 import com.dan.chatop.model.Rental;
+import com.dan.chatop.model.RentalResponse;
 import com.dan.chatop.model.User;
 import com.dan.chatop.repository.RentalRepository;
 import com.dan.chatop.repository.UserRepository;
@@ -58,6 +59,7 @@ public class RentalServiceImpl implements IRentalService {
         rental.setUpdatedAt(rental.getUpdatedAt());
         MultipartFile file = rentalDto.getPicture();
         byte[] bytes = file.getBytes();
+
 
         Path path = Paths.get(uploadDir + File.separator + file.getOriginalFilename());
         Files.write(path, bytes);
