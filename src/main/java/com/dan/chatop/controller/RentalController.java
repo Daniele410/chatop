@@ -1,6 +1,7 @@
 package com.dan.chatop.controller;
 
 import com.dan.chatop.auth.AuthenticationService;
+import com.dan.chatop.dto.MessageDto;
 import com.dan.chatop.dto.RentalDto;
 import com.dan.chatop.dto.RentalListDto;
 import com.dan.chatop.dto.RentalRequestDto;
@@ -75,7 +76,7 @@ public class RentalController {
 //    }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, value = "/rentals")
-    public ResponseEntity<Rental> createRental(@ModelAttribute RentalDto rentalDto)  {
+    public ResponseEntity<Rental> createRental(@ModelAttribute RentalDto rentalDto) {
         String userEmail = authenticationService.getAuthenticatedUserEmail();
         if (userEmail == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -84,9 +85,18 @@ public class RentalController {
         return new ResponseEntity<>(rentalService.createRental(rentalDto), CREATED);
     }
 
+    //    @PutMapping("/rentals/{id}")
+//    public ResponseEntity<Rental> updateRental(@PathVariable Long id, @RequestBody Rental rental) {
+//        return new ResponseEntity<>(rentalService.updateRental(rental), ACCEPTED);
+//    }
     @PutMapping("/rentals/{id}")
-    public ResponseEntity<Rental> updateRental(@PathVariable Long id, @RequestBody Rental rental) {
-        return new ResponseEntity<>(rentalService.updateRental(rental), ACCEPTED);
+    public ResponseEntity<RentalRequestDto> updateRentalById(@PathVariable Long id, @ModelAttribute("rental") RentalRequestDto rentalRequestDto) {
+
+        RentalRequestDto messageResponse = rentalService.updateRental(id, rentalRequestDto);
+
+        log.info("Rental updated successfully with id:{}", id);
+        return ResponseEntity.ok()
+                .body(messageResponse);
     }
 
     @DeleteMapping("/rentals/{id}")

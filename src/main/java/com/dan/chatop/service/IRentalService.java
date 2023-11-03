@@ -19,7 +19,7 @@ public interface IRentalService{
 
     boolean existsById(Long id);
 
-    Rental updateRental(Rental rental);
+    RentalRequestDto updateRental(Long id, RentalRequestDto rentalRequestDto);
 
     void deleteRental(Long id);
 }

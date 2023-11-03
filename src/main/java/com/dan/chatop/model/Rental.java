@@ -42,8 +42,8 @@ public class Rental {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt= LocalDateTime.now();
 
-    @OneToMany(mappedBy = "rental")
-    private List<Message> messages;
+//    @OneToMany(mappedBy = "rental")
+//    private List<Message> messages;
 
 
 }

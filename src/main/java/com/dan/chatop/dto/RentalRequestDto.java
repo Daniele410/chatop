@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+import java.util.Date;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -16,4 +19,6 @@ public class RentalRequestDto {
     private Long price;
     private String picture;
     private String description;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

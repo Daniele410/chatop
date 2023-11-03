@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -24,8 +25,6 @@ public class MessageServiceImpl implements IMessageService {
     private final UserRepository userRepository;
 
     private final RentalRepository rentalRepository;
-
-
 
     @Override
     public void postMessage(Message message) {
@@ -57,8 +56,8 @@ public class MessageServiceImpl implements IMessageService {
                 message.setMessage(messageDto.getMessage());
                 message.setUser(user.get());
                 message.setRental(rental.get());
-                message.setCreatedAt(message.getCreatedAt());
-                message.setUpdatedAt(message.getUpdatedAt());
+                message.setCreatedAt(LocalDateTime.now());
+                message.setUpdatedAt(LocalDateTime.now());
         messageRepository.save(message);
         log.info("Send message successfully");
     }

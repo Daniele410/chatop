@@ -1,6 +1,5 @@
 package com.dan.chatop.service;
 
-import com.dan.chatop.auth.AuthenticationService;
 import com.dan.chatop.dto.RentalDto;
 import com.dan.chatop.dto.RentalRequestDto;
 import com.dan.chatop.exception.InvalidImageFormatException;
@@ -35,8 +34,6 @@ public class RentalServiceImpl implements IRentalService {
 
     private final UserRepository userRepository;
 
-    private final AuthenticationService authenticationService;
-
     @Value("${file.upload-dir}")
     private String uploadDir;
     @Value("${file.upload-url}")
@@ -45,54 +42,27 @@ public class RentalServiceImpl implements IRentalService {
     @Override
     @SneakyThrows
     public List<Rental> getAllRentals() {
-        List<Rental> rentals = rentalRepository.findAll();
         log.info("Rentals retrieved successfully");
         return rentalRepository.findAll();
     }
-
-//    @Override
-//    public List<Rental> getAllRentals() {
-//
-//        return rentalRepository.findAll();
-//    }
-
 
     @Override
     public RentalRequestDto getRentalByUserId(Long rentalId) {
         Rental rental = rentalRepository.findById(rentalId).orElseThrow(() -> new RuntimeException("Rental with ID " + rentalId + " not found"));
         RentalRequestDto rentalRequestDto = RentalRequestDto.builder()
+                .id(rental.getId())
                 .name(rental.getName())
                 .surface(rental.getSurface())
                 .price(rental.getPrice())
                 .picture(rental.getPicture())
                 .description(rental.getDescription())
+                .createdAt(rental.getCreatedAt())
+                .updatedAt(rental.getUpdatedAt())
                 .build();
         log.info("Rental retrieved successfully");
         return rentalRequestDto;
     }
 
-
-    //    @Override
-//    public Rental addRental(RentalDto rentalDto) throws IOException {
-//        String userEmail = authenticationService.getAuthenticatedUserEmail();
-//        Optional<User> user = userRepository.findByEmail(userEmail);
-//        Rental rental = new Rental();
-//        rental.setName(rentalDto.getName());
-//        rental.setSurface(rentalDto.getSurface());
-//        rental.setPrice(rentalDto.getPrice());
-//        rental.setDescription(rentalDto.getDescription());
-//        rental.setOwnerId(user.get().getId());
-//        rental.setCreatedAt(rental.getCreatedAt());
-//        rental.setUpdatedAt(rental.getUpdatedAt());
-//        MultipartFile file = rentalDto.getPicture();
-//        byte[] bytes = file.getBytes();
-//
-//
-//        Path path = Paths.get(uploadDir + File.separator + file.getOriginalFilename());
-//        Files.write(path.getFileName(), bytes);
-//        rental.setPicture(file.getOriginalFilename().getBytes());
-//        return rentalRepository.save(rental);
-//    }
     @Override
     public Rental createRental(RentalDto rentalDto) {
 
@@ -126,22 +96,16 @@ public class RentalServiceImpl implements IRentalService {
     }
 
     @Override
-    public Rental updateRental(Rental rental) {
-        return rentalRepository.save(rental);
+    public RentalRequestDto updateRental(Long id,RentalRequestDto rentalRequestDto) {
+        Rental rental =rentalRepository.findById(id).orElseThrow(() -> new RuntimeException("Rental with ID " + id + " not found"));
+        setRental(rentalRequestDto, rental);
+        rentalRepository.save(rental);
+        return rentalRequestDto;
     }
 
     @Override
     public void deleteRental(Long id) {
         rentalRepository.deleteById(id);
-    }
-
-
-    private static void setRental(RentalDto rentalRequest, Rental rental) {
-        rental.setName(rentalRequest.getName());
-        rental.setSurface(rentalRequest.getSurface());
-        rental.setPrice(rentalRequest.getPrice());
-        rental.setDescription(rentalRequest.getDescription());
-        rental.setUpdatedAt(LocalDateTime.now());
     }
 
     private static RentalRequestDto getRentalRequestDTO(RentalDto rentalRequest, String pictureLocation) {
@@ -177,6 +141,14 @@ public class RentalServiceImpl implements IRentalService {
             log.error("Error while saving rental image");
             throw e;
         }
+    }
+
+    private static void setRental(RentalRequestDto rentalRequest, Rental rental) {
+        rental.setName(rentalRequest.getName());
+        rental.setSurface(rentalRequest.getSurface());
+        rental.setPrice(rentalRequest.getPrice());
+        rental.setDescription(rentalRequest.getDescription());
+        rental.setUpdatedAt(LocalDateTime.now());
     }
 
 }

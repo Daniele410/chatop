@@ -6,8 +6,9 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 public class MessageDto {
-    private Long rental_id;
     private Long user_id;
+    private Long rental_id;
     private String message;
 }

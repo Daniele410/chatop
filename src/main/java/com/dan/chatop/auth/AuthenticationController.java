@@ -2,6 +2,7 @@ package com.dan.chatop.auth;
 
 import com.dan.chatop.dto.UserResponseDTO;
 import com.dan.chatop.exception.ResourceNotFoundException;
+import com.dan.chatop.exception.UserNotFoundException;
 import com.dan.chatop.model.User;
 import com.dan.chatop.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -50,6 +51,8 @@ public class AuthenticationController {
         UserResponseDTO responseDTO = authenticationService.me(userEmail);
         return new ResponseEntity<>(responseDTO, OK);
     }
+
+
 
 
 }

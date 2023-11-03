@@ -11,8 +11,9 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Service
@@ -46,6 +47,8 @@ public class UserServiceImpl implements IUserService {
     @Override
     public User registerUser(UserRegistrationDto registrationDto) {
         User user = new User(registrationDto.getEmail(), registrationDto.getName(), registrationDto.getPassword());
+        user.setCreatedAt(LocalDateTime.now());
+        user.setUpdatedAt(LocalDateTime.now());
         return userRepository.save(user);
     }
 
@@ -55,8 +58,8 @@ public class UserServiceImpl implements IUserService {
         if (userRepository.existsById(userId)) {
             updatedUser.setId(userId);
             User user = userRepository.findById(userId).get();
-            updatedUser.setCreatedAt(user.getCreatedAt());
-            updatedUser.setUpdatedAt(new Date());
+            updatedUser.setCreatedAt(LocalDateTime.now());
+            updatedUser.setUpdatedAt(LocalDateTime.now());
             return userRepository.save(updatedUser);
         } else {
             throw new ResourceNotFoundException("User with ID " + userId + " not found");
@@ -69,7 +72,7 @@ public class UserServiceImpl implements IUserService {
         if (userRepository.existsById(userId)) {
             userRepository.deleteById(userId);
         } else {
-            log.info("id:"+ userId +"not present in Database");
+            log.info("id:" + userId + "not present in Database");
             throw new ResourceNotFoundException("User with ID " + userId + " not found");
         }
 

@@ -12,8 +12,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 @Data
@@ -41,10 +41,10 @@ public class User implements UserDetails {
     private String password;
 
     @Column(name = "created_at")
-    private Date createdAt = Date.from(java.time.Instant.now());
+    private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
-    private Date updatedAt = Date.from(java.time.Instant.now());
+    private LocalDateTime updatedAt;
     ;
 
     @OneToMany(mappedBy = "user")
@@ -59,7 +59,6 @@ public class User implements UserDetails {
         this.password = password;
         this.role = Role.USER;
     }
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -100,22 +99,6 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Date getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
     public List<Message> getMessages() {
         return messages;
     }
@@ -136,6 +119,4 @@ public class User implements UserDetails {
                 ", messages=" + messages +
                 '}';
     }
-
-
 }
