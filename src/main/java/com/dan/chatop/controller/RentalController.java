@@ -1,10 +1,7 @@
 package com.dan.chatop.controller;
 
 import com.dan.chatop.auth.AuthenticationService;
-import com.dan.chatop.dto.MessageDto;
-import com.dan.chatop.dto.RentalDto;
-import com.dan.chatop.dto.RentalListDto;
-import com.dan.chatop.dto.RentalRequestDto;
+import com.dan.chatop.dto.*;
 import com.dan.chatop.model.Rental;
 import com.dan.chatop.repository.RentalRepository;
 import com.dan.chatop.repository.UserRepository;
@@ -50,33 +47,20 @@ public class RentalController {
 
 
     @GetMapping("/rentals/{id}")
-    public ResponseEntity<RentalRequestDto> getRentalsById(@PathVariable Long id) {
+    public ResponseEntity<RentalSimple> getRentalsById(@PathVariable Long id) {
         log.info("get rentals by id");
         String userEmail = authenticationService.getAuthenticatedUserEmail();
 
         if (userEmail == null) {
             return ResponseEntity.badRequest().build();
         }
-        RentalRequestDto rentalDto = rentalService.getRentalByUserId(id);
+        RentalSimple rentalDto = rentalService.getRentalById(id);
         return ResponseEntity.ok()
                 .body(rentalDto);
     }
 
-//    @GetMapping("/detail/{id}")
-//    public ResponseEntity<Rental> getRentalImage(@PathVariable Long id) {
-//        Optional<Rental> optionalRental = rentalRepository.findById(id);
-//
-//        if (!optionalRental.isPresent()) {
-//            return ResponseEntity.notFound().build();
-//        }
-//
-//        return ResponseEntity.ok()
-//                .contentType(MediaType.valueOf(MediaType.MULTIPART_FORM_DATA_VALUE))
-//                .body(optionalRental.get());
-//    }
-
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, value = "/rentals")
-    public ResponseEntity<Rental> createRental(@ModelAttribute RentalDto rentalDto) {
+    public ResponseEntity<MessageResponse> createRental(@ModelAttribute RentalDto rentalDto) {
         String userEmail = authenticationService.getAuthenticatedUserEmail();
         if (userEmail == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -85,14 +69,10 @@ public class RentalController {
         return new ResponseEntity<>(rentalService.createRental(rentalDto), CREATED);
     }
 
-    //    @PutMapping("/rentals/{id}")
-//    public ResponseEntity<Rental> updateRental(@PathVariable Long id, @RequestBody Rental rental) {
-//        return new ResponseEntity<>(rentalService.updateRental(rental), ACCEPTED);
-//    }
     @PutMapping("/rentals/{id}")
-    public ResponseEntity<RentalRequestDto> updateRentalById(@PathVariable Long id, @ModelAttribute("rental") RentalRequestDto rentalRequestDto) {
+    public ResponseEntity<MessageResponse> updateRentalById(@PathVariable Long id, @ModelAttribute("rental") RentalRequestDto rentalRequestDto) {
 
-        RentalRequestDto messageResponse = rentalService.updateRental(id, rentalRequestDto);
+        MessageResponse messageResponse = rentalService.updateRental(id, rentalRequestDto);
 
         log.info("Rental updated successfully with id:{}", id);
         return ResponseEntity.ok()

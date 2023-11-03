@@ -22,9 +22,9 @@ public class Rental {
 
     private String name;
 
-    private long surface;
+    private Double surface;
 
-    private long price;
+    private Double price;
 
     private String picture;
 

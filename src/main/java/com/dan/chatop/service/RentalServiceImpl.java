@@ -1,7 +1,9 @@
 package com.dan.chatop.service;
 
+import com.dan.chatop.dto.MessageResponse;
 import com.dan.chatop.dto.RentalDto;
 import com.dan.chatop.dto.RentalRequestDto;
+import com.dan.chatop.dto.RentalSimple;
 import com.dan.chatop.exception.InvalidImageFormatException;
 import com.dan.chatop.model.Rental;
 import com.dan.chatop.model.User;
@@ -47,24 +49,25 @@ public class RentalServiceImpl implements IRentalService {
     }
 
     @Override
-    public RentalRequestDto getRentalByUserId(Long rentalId) {
+    public RentalSimple getRentalById(Long rentalId) {
         Rental rental = rentalRepository.findById(rentalId).orElseThrow(() -> new RuntimeException("Rental with ID " + rentalId + " not found"));
-        RentalRequestDto rentalRequestDto = RentalRequestDto.builder()
+        RentalSimple rentalSimple = RentalSimple.builder()
                 .id(rental.getId())
                 .name(rental.getName())
                 .surface(rental.getSurface())
                 .price(rental.getPrice())
                 .picture(rental.getPicture())
                 .description(rental.getDescription())
-                .createdAt(rental.getCreatedAt())
-                .updatedAt(rental.getUpdatedAt())
+                .owner_id(rental.getOwnerId())
+                .created_at(rental.getCreatedAt())
+                .updated_at(rental.getUpdatedAt())
                 .build();
         log.info("Rental retrieved successfully");
-        return rentalRequestDto;
+        return rentalSimple;
     }
 
     @Override
-    public Rental createRental(RentalDto rentalDto) {
+    public MessageResponse createRental(RentalDto rentalDto) {
 
         String pictureLocation = uploadDir + "/" + savePicture(rentalDto.getPicture());
 
@@ -81,13 +84,14 @@ public class RentalServiceImpl implements IRentalService {
         rentalSave.setSurface(rental.getSurface());
         rentalSave.setPrice(rental.getPrice());
         rentalSave.setDescription(rental.getDescription());
-        rentalSave.setPicture(rental.getPicture());
+        rentalSave.setPicture(pictureLocation);
         rentalSave.setOwnerId(authUser.getId());
         rentalSave.setCreatedAt(LocalDateTime.now());
         rentalSave.setUpdatedAt(LocalDateTime.now());
         rentalRepository.save(rentalSave);
         log.info("Rental created successfully");
-        return rentalSave;
+        MessageResponse messageResponse = new MessageResponse("Rental created !");
+        return messageResponse;
     }
 
     @Override
@@ -96,11 +100,12 @@ public class RentalServiceImpl implements IRentalService {
     }
 
     @Override
-    public RentalRequestDto updateRental(Long id,RentalRequestDto rentalRequestDto) {
-        Rental rental =rentalRepository.findById(id).orElseThrow(() -> new RuntimeException("Rental with ID " + id + " not found"));
+    public MessageResponse updateRental(Long id, RentalRequestDto rentalRequestDto) {
+        Rental rental = rentalRepository.findById(id).orElseThrow(() -> new RuntimeException("Rental with ID " + id + " not found"));
         setRental(rentalRequestDto, rental);
         rentalRepository.save(rental);
-        return rentalRequestDto;
+        MessageResponse messageResponse = new MessageResponse("Rental updated !");
+        return messageResponse;
     }
 
     @Override

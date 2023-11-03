@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -13,13 +14,9 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RentalDto {
-    private Long id;
     private String name;
-    private long surface;
-    private long price;
+    private Double surface;
+    private Double price;
     private MultipartFile picture;
     private String description;
-    private Integer ownerId;
-    private Date createdAt;
-    private Date updatedAt;
 }
