@@ -1,6 +1,6 @@
-package com.dan.chatop.model;
+package com.dan.chatop.dto;
 
-import jakarta.persistence.Entity;
+import com.dan.chatop.model.Rental;
 import lombok.*;
 
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class RentalResponse {
+public class RentalListDto {
 
     private List<Rental> rentals;
 

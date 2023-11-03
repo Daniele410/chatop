@@ -2,16 +2,9 @@ package com.dan.chatop.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.math.BigDecimal;
-import java.sql.Blob;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -33,7 +26,7 @@ public class Rental {
 
     private long price;
 
-    private byte[] picture;
+    private String picture;
 
     private String description;
 
@@ -43,11 +36,11 @@ public class Rental {
 
     @JsonProperty("created_at")
     @Column(name = "created_at")
-    private LocalDate createdAt= LocalDate.now();
+    private LocalDateTime createdAt= LocalDateTime.now();
 
     @JsonProperty("updated_at")
     @Column(name = "updated_at")
-    private LocalDate updatedAt= LocalDate.now();
+    private LocalDateTime updatedAt= LocalDateTime.now();
 
     @OneToMany(mappedBy = "rental")
     private List<Message> messages;
