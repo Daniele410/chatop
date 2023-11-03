@@ -1,15 +1,31 @@
 package com.dan.chatop.service;
 
+import com.dan.chatop.dto.MessageDto;
 import com.dan.chatop.model.Message;
+import com.dan.chatop.model.Rental;
+import com.dan.chatop.model.User;
 import com.dan.chatop.repository.MessageRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.dan.chatop.repository.RentalRepository;
+import com.dan.chatop.repository.UserRepository;
+import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
+@AllArgsConstructor
+@Slf4j
 public class MessageServiceImpl implements IMessageService {
 
-    @Autowired
-    private MessageRepository messageRepository;
+    private final MessageRepository messageRepository;
+
+    private final UserRepository userRepository;
+
+    private final RentalRepository rentalRepository;
+
+
 
     @Override
     public void postMessage(Message message) {
@@ -31,6 +47,20 @@ public class MessageServiceImpl implements IMessageService {
         Message messageToUpdate = messageRepository.findById(id).get();
         messageToUpdate.setMessage(message.getMessage());
         messageRepository.save(messageToUpdate);
+    }
+
+    @Override
+    public void sendMessage(MessageDto messageDto) {
+       Optional<User> user = userRepository.findById(messageDto.getUser_id());
+       Optional<Rental> rental= rentalRepository.findById(messageDto.getRental_id());
+        Message message = new Message();
+                message.setMessage(messageDto.getMessage());
+                message.setUser(user.get());
+                message.setRental(rental.get());
+                message.setCreatedAt(message.getCreatedAt());
+                message.setUpdatedAt(message.getUpdatedAt());
+        messageRepository.save(message);
+        log.info("Send message successfully");
     }
 
 }

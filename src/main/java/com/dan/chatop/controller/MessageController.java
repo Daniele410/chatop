@@ -1,28 +1,43 @@
 package com.dan.chatop.controller;
 
+import com.dan.chatop.dto.MessageDto;
 import com.dan.chatop.model.Message;
+import com.dan.chatop.model.User;
 import com.dan.chatop.service.IMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/api/messages/")
+@RequestMapping("/api")
 class MessageController {
 
     @Autowired
     IMessageService messageService;
 
-    @PostMapping
-    public ResponseEntity<Message> postMessage(@RequestBody Message message) {
-        messageService.postMessage(message);
+    @PostMapping("/messages")
+    public ResponseEntity<MessageDto> postMessage(@RequestBody MessageDto message) {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+        if(userDetails == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        messageService.sendMessage(message);
         return ResponseEntity.ok(message);
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<Message> getMessageById(@RequestBody Long id) {
-        return ResponseEntity.ok(messageService.getMessageById(id));
-    }
+//    @GetMapping("/messages/{id}")
+//    public ResponseEntity<Message> getMessageById( @PathVariable Long id) {
+//        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
+//                .getPrincipal();
+//        User user = (User) userDetails;
+//        if(user.getId() == id) {
+//            return ResponseEntity.ok(messageService.getMessageById(id));
+//        }
+//        return ResponseEntity.badRequest().build();
+//    }
 
 }

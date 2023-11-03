@@ -2,9 +2,9 @@ package com.dan.chatop.controller;
 
 import com.dan.chatop.auth.AuthenticationService;
 import com.dan.chatop.dto.RentalDto;
+import com.dan.chatop.dto.RentalListDto;
 import com.dan.chatop.dto.RentalRequestDto;
 import com.dan.chatop.model.Rental;
-import com.dan.chatop.dto.RentalListDto;
 import com.dan.chatop.repository.RentalRepository;
 import com.dan.chatop.repository.UserRepository;
 import com.dan.chatop.service.IRentalService;
@@ -14,15 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
-import java.util.Optional;
 
 import static org.springframework.http.HttpStatus.*;
 
@@ -55,7 +48,7 @@ public class RentalController {
     }
 
 
-    @GetMapping("/{id}")
+    @GetMapping("/rentals/{id}")
     public ResponseEntity<RentalRequestDto> getRentalsById(@PathVariable Long id) {
         log.info("get rentals by id");
         String userEmail = authenticationService.getAuthenticatedUserEmail();
@@ -83,8 +76,6 @@ public class RentalController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, value = "/rentals")
     public ResponseEntity<Rental> createRental(@ModelAttribute RentalDto rentalDto)  {
-//        log.info("create new rentals:" + rental.getName());
-
         String userEmail = authenticationService.getAuthenticatedUserEmail();
         if (userEmail == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);

@@ -4,7 +4,6 @@ import com.dan.chatop.auth.AuthenticationService;
 import com.dan.chatop.dto.RentalDto;
 import com.dan.chatop.dto.RentalRequestDto;
 import com.dan.chatop.exception.InvalidImageFormatException;
-import com.dan.chatop.exception.RentalNotFondException;
 import com.dan.chatop.model.Rental;
 import com.dan.chatop.model.User;
 import com.dan.chatop.repository.RentalRepository;
@@ -72,6 +71,28 @@ public class RentalServiceImpl implements IRentalService {
         return rentalRequestDto;
     }
 
+
+    //    @Override
+//    public Rental addRental(RentalDto rentalDto) throws IOException {
+//        String userEmail = authenticationService.getAuthenticatedUserEmail();
+//        Optional<User> user = userRepository.findByEmail(userEmail);
+//        Rental rental = new Rental();
+//        rental.setName(rentalDto.getName());
+//        rental.setSurface(rentalDto.getSurface());
+//        rental.setPrice(rentalDto.getPrice());
+//        rental.setDescription(rentalDto.getDescription());
+//        rental.setOwnerId(user.get().getId());
+//        rental.setCreatedAt(rental.getCreatedAt());
+//        rental.setUpdatedAt(rental.getUpdatedAt());
+//        MultipartFile file = rentalDto.getPicture();
+//        byte[] bytes = file.getBytes();
+//
+//
+//        Path path = Paths.get(uploadDir + File.separator + file.getOriginalFilename());
+//        Files.write(path.getFileName(), bytes);
+//        rental.setPicture(file.getOriginalFilename().getBytes());
+//        return rentalRepository.save(rental);
+//    }
     @Override
     public Rental createRental(RentalDto rentalDto) {
 

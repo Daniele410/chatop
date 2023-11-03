@@ -1,5 +1,6 @@
 package com.dan.chatop.service;
 
+import com.dan.chatop.dto.MessageDto;
 import com.dan.chatop.model.Message;
 
 public interface IMessageService {
@@ -10,4 +11,6 @@ public interface IMessageService {
     void deleteMessage(Long id);
 
     void updateMessageById(Long id, Message message);
+
+    void sendMessage(MessageDto messageDto);
 }
