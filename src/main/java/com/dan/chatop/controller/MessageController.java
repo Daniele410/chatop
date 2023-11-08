@@ -29,15 +29,4 @@ class MessageController {
         return ResponseEntity.ok(messageResponse);
     }
 
-//    @GetMapping("/messages/{id}")
-//    public ResponseEntity<Message> getMessageById(@PathVariable Long id) {
-//        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
-//                .getPrincipal();
-//        User user = (User) userDetails;
-//        if(user.getId() == id) {
-//            return ResponseEntity.ok(messageService.getMessageById(id));
-//        }
-//        return ResponseEntity.badRequest().build();
-//    }
-
 }

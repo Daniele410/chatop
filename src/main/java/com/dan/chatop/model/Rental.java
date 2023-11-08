@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Getter
@@ -41,9 +40,5 @@ public class Rental {
     @JsonProperty("updated_at")
     @Column(name = "updated_at")
     private LocalDateTime updatedAt= LocalDateTime.now();
-
-//    @OneToMany(mappedBy = "rental")
-//    private List<Message> messages;
-
 
 }

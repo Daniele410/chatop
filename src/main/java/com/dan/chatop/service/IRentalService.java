@@ -13,10 +13,6 @@ public interface IRentalService{
 
     RentalSimple getRentalById(Long id);
 
-//    Rental addRental(Rental rental);
-
-//    Rental addRental(RentalDto rentalDto) ;
-
     MessageResponse createRental(RentalDto rentalDto);
 
     boolean existsById(Long id);

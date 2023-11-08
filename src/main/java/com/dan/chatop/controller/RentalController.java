@@ -45,7 +45,6 @@ public class RentalController {
         return ResponseEntity.ok(new RentalListDto(rentals));
     }
 
-
     @GetMapping("/rentals/{id}")
     public ResponseEntity<RentalSimple> getRentalsById(@PathVariable Long id) {
         log.info("get rentals by id");
