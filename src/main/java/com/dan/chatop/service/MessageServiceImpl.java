@@ -7,7 +7,6 @@ import com.dan.chatop.model.User;
 import com.dan.chatop.repository.MessageRepository;
 import com.dan.chatop.repository.RentalRepository;
 import com.dan.chatop.repository.UserRepository;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -50,14 +49,14 @@ public class MessageServiceImpl implements IMessageService {
 
     @Override
     public void sendMessage(MessageDto messageDto) {
-       Optional<User> user = userRepository.findById(messageDto.getUser_id());
-       Optional<Rental> rental= rentalRepository.findById(messageDto.getRental_id());
+        Optional<User> user = userRepository.findById(messageDto.getUser_id());
+        Optional<Rental> rental = rentalRepository.findById(messageDto.getRental_id());
         Message message = new Message();
-                message.setMessage(messageDto.getMessage());
-                message.setUser(user.get());
-                message.setRental(rental.get());
-                message.setCreatedAt(LocalDateTime.now());
-                message.setUpdatedAt(LocalDateTime.now());
+        message.setMessage(messageDto.getMessage());
+        message.setUser(user.get());
+        message.setRental(rental.get());
+        message.setCreatedAt(LocalDateTime.now());
+        message.setUpdatedAt(LocalDateTime.now());
         messageRepository.save(message);
         log.info("Send message successfully");
     }

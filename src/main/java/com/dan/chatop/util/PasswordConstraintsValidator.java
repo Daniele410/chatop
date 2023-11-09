@@ -4,7 +4,6 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.passay.*;
 
-
 import java.util.Arrays;
 
 public class PasswordConstraintsValidator implements ConstraintValidator<Password, String> {

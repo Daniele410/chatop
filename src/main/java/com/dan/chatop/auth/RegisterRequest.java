@@ -15,5 +15,4 @@ public class RegisterRequest {
     private String password;
     private String createdAt;
     private String updatedAt;
-
 }

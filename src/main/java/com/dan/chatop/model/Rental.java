@@ -35,10 +35,10 @@ public class Rental {
 
     @JsonProperty("created_at")
     @Column(name = "created_at")
-    private LocalDateTime createdAt= LocalDateTime.now();
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     @JsonProperty("updated_at")
     @Column(name = "updated_at")
-    private LocalDateTime updatedAt= LocalDateTime.now();
+    private LocalDateTime updatedAt = LocalDateTime.now();
 
 }

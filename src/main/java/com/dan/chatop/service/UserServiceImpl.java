@@ -24,13 +24,11 @@ public class UserServiceImpl implements IUserService {
     @Autowired
     private UserRepository userRepository;
 
-
     @Override
     public List<User> getAllUsers() {
         log.info("get all users");
         return userRepository.findAll();
     }
-
 
     @Override
     public User getUserById(Long id) {

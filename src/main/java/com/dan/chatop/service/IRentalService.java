@@ -8,7 +8,7 @@ import com.dan.chatop.model.Rental;
 
 import java.util.List;
 
-public interface IRentalService{
+public interface IRentalService {
     List<Rental> getAllRentals();
 
     RentalSimple getRentalById(Long id);

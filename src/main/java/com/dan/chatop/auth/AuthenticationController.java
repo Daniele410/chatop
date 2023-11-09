@@ -2,7 +2,6 @@ package com.dan.chatop.auth;
 
 import com.dan.chatop.dto.UserResponseDTO;
 import com.dan.chatop.exception.ResourceNotFoundException;
-import com.dan.chatop.exception.UserNotFoundException;
 import com.dan.chatop.model.User;
 import com.dan.chatop.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.webjars.NotFoundException;
 
 import java.util.Optional;
 
@@ -51,8 +49,5 @@ public class AuthenticationController {
         UserResponseDTO responseDTO = authenticationService.me(userEmail);
         return new ResponseEntity<>(responseDTO, OK);
     }
-
-
-
 
 }

@@ -6,16 +6,13 @@ import com.dan.chatop.model.User;
 
 import java.util.List;
 
-public interface IUserService /*extends UserDetailsService */{
+public interface IUserService{
 
     List<User> getAllUsers();
-
-    /*UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;*/
 
     User getUserById(Long id);
 
     User addUser(User user);
-
 
     User registerUser(UserRegistrationDto registrationDto);
 

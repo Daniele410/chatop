@@ -16,9 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Slf4j
 @Service
@@ -71,7 +69,6 @@ public class AuthenticationService {
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new ResourceNotFoundException("User with email " + userEmail + " not found"));
 
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         UserResponseDTO response = new UserResponseDTO();
         response.setId(user.getId());
         response.setName(user.getName());
@@ -96,6 +93,4 @@ public class AuthenticationService {
             return authentication.getName();
         }
     }
-
 }
-

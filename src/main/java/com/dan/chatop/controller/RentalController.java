@@ -29,11 +29,6 @@ public class RentalController {
 
     private final AuthenticationService authenticationService;
 
-    private final UserRepository userRepository;
-
-    private final RentalRepository rentalRepository;
-
-
     @GetMapping("/rentals")
     public ResponseEntity<RentalListDto> getAllRentals() {
         String userEmail = authenticationService.getAuthenticatedUserEmail();

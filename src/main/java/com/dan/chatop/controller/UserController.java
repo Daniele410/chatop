@@ -23,7 +23,7 @@ public class UserController {
     @GetMapping("/user/{id}")
     public ResponseEntity<UserResponseDTO> retrieveUserById(@PathVariable Long id) throws UserNotFoundException {
         Optional<User> user = userRepository.findById(id);
-        if(user.isEmpty()) {
+        if (user.isEmpty()) {
             throw new UserNotFoundException("User with id " + id + " not found");
         }
         UserResponseDTO meResponse =

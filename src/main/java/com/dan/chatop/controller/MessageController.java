@@ -21,7 +21,7 @@ class MessageController {
     public ResponseEntity<MessageResponse> sendMessage(@RequestBody MessageDto message) {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
-        if(userDetails == null) {
+        if (userDetails == null) {
             return ResponseEntity.badRequest().build();
         }
         messageService.sendMessage(message);
