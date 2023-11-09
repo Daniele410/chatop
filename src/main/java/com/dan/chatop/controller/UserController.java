@@ -4,6 +4,7 @@ import com.dan.chatop.dto.UserResponseDTO;
 import com.dan.chatop.exception.UserNotFoundException;
 import com.dan.chatop.model.User;
 import com.dan.chatop.repository.UserRepository;
+import com.dan.chatop.service.IUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +19,11 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class UserController {
 
-    private final UserRepository userRepository;
+    private final IUserService userService;
 
     @GetMapping("/user/{id}")
     public ResponseEntity<UserResponseDTO> retrieveUserById(@PathVariable Long id) throws UserNotFoundException {
-        Optional<User> user = userRepository.findById(id);
+        Optional<User> user = Optional.ofNullable(userService.getUserById(id));
         if (user.isEmpty()) {
             throw new UserNotFoundException("User with id " + id + " not found");
         }
