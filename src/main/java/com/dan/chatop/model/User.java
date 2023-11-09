@@ -45,7 +45,6 @@ public class User implements UserDetails {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
-    ;
 
     @OneToMany(mappedBy = "user")
     private List<Message> messages;
