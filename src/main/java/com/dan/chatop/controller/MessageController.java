@@ -3,6 +3,10 @@ package com.dan.chatop.controller;
 import com.dan.chatop.dto.MessageDto;
 import com.dan.chatop.dto.MessageResponse;
 import com.dan.chatop.service.IMessageService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,6 +21,10 @@ class MessageController {
 
     private final IMessageService messageService;
 
+    @Operation(summary = "Send Message", description = "Send a message.")
+    @Parameter(name = "Authorization", description = "JWT Bearer token", in = ParameterIn.HEADER, required = true,
+            schema = @Schema(type = "string", format = "Bearer your_jwt_token_here"),
+            example = "Bearer your_jwt_token_here")
     @PostMapping("/messages")
     public ResponseEntity<MessageResponse> sendMessage(@RequestBody MessageDto message) {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
