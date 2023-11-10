@@ -52,7 +52,7 @@ Before running the ChaTop Backend API, follow these installation steps:
 
 You can use [Postman](https://www.postman.com/) to test the ChaTop API. Download the Postman collection and environment script:
 
-- [ChâTop API Postman Collection](src/main/resources/script/Rest Chaton.postman_collection.json)
+- [ChaTop API Postman Collection](src/main/resources/script/Rest Chaton.postman_collection.json)
 
 ## The ChaTop backend application is developed using the following technologies:
 
