@@ -54,6 +54,16 @@ You can use [Postman](https://www.postman.com/) to test the ChaTop API. Download
 
 - [ChaTop API Postman Collection](src/main/resources/script/Rest Chaton.postman_collection.json)
 
+## Testing with Swagger UI
+- Run the application ChaTop API
+- Access the Swagger UI documentation at http://localhost:8080/swagger-ui/index.html
+- Register a user by sending a POST request to the `/api/auth/register` endpoint
+- Login by sending a POST request to the `/api/auth/login` endpoint
+- Copy the JWT token from the response
+- Click on the `Authorize` button on the top right corner of the Swagger UI page
+- Paste the JWT token in the `Value` field and click on the `Authorize` button
+- `You can now test the API endpoints`
+
 ## The ChaTop backend application is developed using the following technologies:
 
 - **Java:** Version 17 [![Java Version](https://img.shields.io/badge/Java-17-blue)](https://img.shields.io/badge/Java-17-blue)
