@@ -12,16 +12,16 @@ The ChaTop API encompasses the following key features:
 - User Authentication with **JWT** (utilizing io.jsonwebtoken library)
 - User registration
 - Rental creation
-- Rental update
 - Rental display
+- Rental update
 - Sending Messages
 
 ## Installation
 
 Before running the ChaTop Backend API, follow these installation steps:
 
-1. Clone this repository from [here](https://github.com/Daniele410/p9Mediscreen.git).
-2. Install Java Development Kit (JDK) 17 on your local machine.
+1. Clone this repository.
+2. Install JDK 17 (Java Development Kit) on your local machine.
 3. Install Maven locally.
 4. Install MySQL on your local machine and create a database for the application.
 5. Configure the necessary environment variables in your system or within your IDE before running the application.
