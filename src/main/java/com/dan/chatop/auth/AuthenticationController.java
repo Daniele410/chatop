@@ -4,6 +4,7 @@ import com.dan.chatop.dto.UserResponseDTO;
 import com.dan.chatop.exception.ResourceNotFoundException;
 import com.dan.chatop.model.User;
 import com.dan.chatop.repository.UserRepository;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,7 @@ public class AuthenticationController {
     private final UserRepository userRepository;
 
     @PostMapping("/register")
-    public ResponseEntity<Object> register(@RequestBody RegisterRequest request) throws Exception {
+    public ResponseEntity<Object> register(@Valid @RequestBody RegisterRequest request) throws Exception {
         Optional<User> userEmail = userRepository.findByEmail(request.getEmail());
         if (userEmail.isPresent()) {
 

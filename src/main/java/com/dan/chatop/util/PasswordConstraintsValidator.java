@@ -13,7 +13,7 @@ public class PasswordConstraintsValidator implements ConstraintValidator<Passwor
         PasswordValidator passwordValidator = new PasswordValidator(
                 Arrays.asList(
                         //Length rule. Min 10 max 60 characters
-                        new LengthRule(8, 60),
+                        new LengthRule(6, 60),
                         //At least one upper case letter
                         new UppercaseCharacterRule(1),
                         //At least one number
