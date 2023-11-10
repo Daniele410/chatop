@@ -26,7 +26,7 @@ public class AuthenticationController {
     private final UserRepository userRepository;
 
     @PostMapping("/register")
-    public ResponseEntity<Object> register(@Valid @RequestBody RegisterRequest request) throws Exception {
+    public ResponseEntity<Object> register(@RequestBody RegisterRequest request) throws Exception {
         Optional<User> userEmail = userRepository.findByEmail(request.getEmail());
         if (userEmail.isPresent()) {
 
