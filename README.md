@@ -48,6 +48,12 @@ Before running the ChaTop Backend API, follow these installation steps:
   ```bash
   mvn clean install spring-boot:run
 
+## Testing with Postman
+
+You can use [Postman](https://www.postman.com/) to test the ChaTop API. Download the Postman collection and environment script:
+
+- [ChâTop API Postman Collection](src/main/resources/script/Rest Chaton.postman_collection.json)
+
 ## The ChaTop backend application is developed using the following technologies:
 
 - **Java:** Version 17 [![Java Version](https://img.shields.io/badge/Java-17-blue)](https://img.shields.io/badge/Java-17-blue)

@@ -1,0 +1,391 @@
+{
+	"info": {
+		"_postman_id": "48afb8ac-2c4a-4fea-bbfd-65701286e1cf",
+		"name": "Rest Chaton",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20888055",
+		"_collection_link": "https://orange-star-772882.postman.co/workspace/OCR~32b5e762-cdae-4859-bc31-a2e0c2fb8bc9/collection/20888055-48afb8ac-2c4a-4fea-bbfd-65701286e1cf?action=share&source=collection_link&creator=20888055"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"test@test.com\",\r\n    \"name\": \"test\",\r\n    \"password\": \"test!31\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/auth/register",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"test@test.com\",\r\n    \"password\": \"test!31\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/auth/login",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Me",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MUB0ZXN0LmNvbSIsImlhdCI6MTY5ODQxNTIwNiwiZXhwIjoxNjk4NDE2NjQ2fQ.T2J-af0k5ua-KvA2qVkWAK5Fh-3pIWDBjZ2c0sqeSMI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/auth/me",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"auth",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UserById",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MkB0ZXN0LmNvbSIsImlhdCI6MTY5OTAyNTE4MSwiZXhwIjoxNjk5MDI2NjIxfQ.u0inWgTuQnIY7MZ1mgd27E7oABty81PoLouNy7-Ljcw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/user/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"user",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "rentals",
+			"item": [
+				{
+					"name": "getById",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QHRlc3QuY29tIiwiaWF0IjoxNjk5MDE5OTE3LCJleHAiOjE2OTkwMjEzNTd9.KpzNPlr2xR5SeacbDQkpzndF7t9MeZvAoyamgZQuVTI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/rentals/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"rentals",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get All",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QHRlc3QuY29tIiwiaWF0IjoxNjk5MDI0NzY5LCJleHAiOjE2OTkwMjYyMDl9.b_N0cyxR768ZSqRZG0JHjCwgU9emloawpSUq9jTtSAo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/rentals",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"rentals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QHRlc3QuY29tIiwiaWF0IjoxNjk4ODQzODE1LCJleHAiOjE2OTg4NDUyNTV9.qyK89LG4SGiedtNg5EpXG_NUC0cQlJAWbf7NbbrpevI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "test4",
+									"type": "text"
+								},
+								{
+									"key": "surface",
+									"value": "150",
+									"type": "text"
+								},
+								{
+									"key": "price",
+									"value": "1500",
+									"type": "text"
+								},
+								{
+									"key": "picture",
+									"type": "file",
+									"src": "/C:/Users/goten/OneDrive/Desktop/photoRental.jpg"
+								},
+								{
+									"key": "description",
+									"value": "My rental",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/api/rentals",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"rentals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Rental",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QHRlc3QuY29tIiwiaWF0IjoxNjk5NTY0MjQ1LCJleHAiOjE2OTk1NjU2ODV9.NSgNhVV3DUrgB9L7Md9JQg2-lGXhaJJep4xtq5CidWc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "test8Mod",
+									"type": "text"
+								},
+								{
+									"key": "surface",
+									"value": "150",
+									"type": "text"
+								},
+								{
+									"key": "price",
+									"value": "1500",
+									"type": "text"
+								},
+								{
+									"key": "picture",
+									"type": "file",
+									"src": "/C:/Users/goten/OneDrive/Desktop/photoRental.jpg",
+									"disabled": true
+								},
+								{
+									"key": "description",
+									"value": "My rental",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/api/rentals/11",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"rentals",
+								"11"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteById",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MUB0ZXN0LmNvbSIsImlhdCI6MTY5ODQyMDk3OCwiZXhwIjoxNjk4NDIyNDE4fQ.0yIbFC0dUn4DZwirvS_ktlNRygZJj-D7vzZiuoDG-iE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/rentals/6",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"rentals",
+								"6"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Messages",
+			"item": [
+				{
+					"name": "message",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QHRlc3QuY29tIiwiaWF0IjoxNjk5NTY0MjQ1LCJleHAiOjE2OTk1NjU2ODV9.NSgNhVV3DUrgB9L7Md9JQg2-lGXhaJJep4xtq5CidWc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"message\": \"I'm insteresting\",\r\n    \"user_id\": 1,\r\n    \"rental_id\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/messages",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"messages"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
