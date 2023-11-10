@@ -41,6 +41,7 @@ public class RentalServiceImpl implements IRentalService {
     @Value("${file.upload-url}")
     private String uploadUrl;
 
+
     @Override
     @SneakyThrows
     public List<Rental> getAllRentals() {
@@ -71,7 +72,7 @@ public class RentalServiceImpl implements IRentalService {
 
         String pictureLocation = uploadDir + "/" + savePicture(rentalDto.getPicture());
 
-        final RentalRequestDto rental = getRentalRequestDTO(rentalDto, pictureLocation);
+        final RentalSimple rental = getRentalRequestDTO(rentalDto, pictureLocation);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -90,8 +91,7 @@ public class RentalServiceImpl implements IRentalService {
         rentalSave.setUpdatedAt(LocalDateTime.now());
         rentalRepository.save(rentalSave);
         log.info("Rental created successfully");
-        MessageResponse messageResponse = new MessageResponse("Rental created !");
-        return messageResponse;
+        return new MessageResponse("Rental created !");
     }
 
     @Override
@@ -104,8 +104,7 @@ public class RentalServiceImpl implements IRentalService {
         Rental rental = rentalRepository.findById(id).orElseThrow(() -> new RuntimeException("Rental with ID " + id + " not found"));
         setRental(rentalRequestDto, rental);
         rentalRepository.save(rental);
-        MessageResponse messageResponse = new MessageResponse("Rental updated !");
-        return messageResponse;
+        return new MessageResponse("Rental updated !");
     }
 
     @Override
@@ -113,16 +112,16 @@ public class RentalServiceImpl implements IRentalService {
         rentalRepository.deleteById(id);
     }
 
-    private static RentalRequestDto getRentalRequestDTO(RentalDto rentalRequest, String pictureLocation) {
-        RentalRequestDto rentalRequestDto = RentalRequestDto.builder()
+    private static RentalSimple getRentalRequestDTO(RentalDto rentalRequest, String pictureLocation) {
+        RentalSimple rentalSimple = RentalSimple.builder()
                 .name(rentalRequest.getName())
                 .surface(rentalRequest.getSurface())
                 .price(rentalRequest.getPrice())
                 .picture(pictureLocation)
                 .description(rentalRequest.getDescription())
                 .build();
-        rentalRequestDto.setPicture(pictureLocation);
-        return rentalRequestDto;
+        rentalSimple.setPicture(pictureLocation);
+        return rentalSimple;
     }
 
     @SneakyThrows

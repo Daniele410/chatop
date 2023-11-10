@@ -13,6 +13,5 @@ public class RentalRequestDto {
     private String name;
     private Double surface;
     private Double price;
-    private String picture;
     private String description;
 }

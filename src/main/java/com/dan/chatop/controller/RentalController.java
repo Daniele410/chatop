@@ -46,7 +46,7 @@ public class RentalController {
 
     private final AuthenticationService authenticationService;
 
-    @Operation(summary = "Get all rentals", description = "Get all rentals",
+    @Operation(summary = "Get rentals", description = "Get all rentals",
             responses = {
                     @ApiResponse(responseCode = "200", description = "All Rentals retrieved successfully",
                             content ={@Content(mediaType = "application/json", schema = @Schema(implementation = RentalListDto.class),
@@ -96,6 +96,7 @@ public class RentalController {
                                     }""", summary = "Unauthorized User"))}
                     ),
             })
+    @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/rentals")
     public ResponseEntity<RentalListDto> getAllRentals() {
         String userEmail = authenticationService.getAuthenticatedUserEmail();
@@ -126,12 +127,23 @@ public class RentalController {
                             content = {@Content(mediaType = "application/json", schema = @Schema(implementation = RentalNotFondException.class),
                                     examples = @ExampleObject(value = """
                                     {
-                                      "timestamp": "2023-08-31T12:00:00.000+00:00",
+                                              "timestamp": "2023-10-31T12:00:00.000+00:00",
                                       "status": 404,
                                       "error": "Not Found",
                                       "message": "Rental not found",
                                       "path": "/api/rentals/1"
                                     }""", summary = "Rental not found"))
+                            }),
+                    @ApiResponse(responseCode = "403", description = "Id Rentals not found",
+                            content = {@Content(mediaType = "application/json", schema = @Schema(implementation = RentalNotFondException.class),
+                                    examples = @ExampleObject(value = """
+                                            {
+                                              "timestamp": "2023-10-31T12:00:00.000+00:00",
+                                              "status": 403,
+                                              "error": "Id Not Found",
+                                              "message": "Id Rental not found",
+                                              "path": "/api/rentals/1"
+                                            }""", summary = "Id Rental not found"))
                             }),
                     @ApiResponse(responseCode = "401", description = "Unauthorized",
                             content ={@Content(mediaType = "application/json", schema = @Schema(implementation = ProblemDetail.class),
@@ -231,7 +243,54 @@ public class RentalController {
         return new ResponseEntity<>(rentalService.createRental(rentalDto), CREATED);
     }
 
-    @Operation(summary = "Update Rental by ID", description = "Update a rental by its ID.")
+    @Operation(summary = "Update a rental by its id", description = "Update a rental by its id",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Rental updated by its id",
+                            content = {@Content(mediaType = "application/json", schema = @Schema(implementation = MessageResponse.class),
+                                    examples = @ExampleObject(value = """
+                                            {
+                                                "message": "Rental updated !"
+                                                }
+                                                """, summary = "Rental updated successfully"))
+                            }),
+                    @ApiResponse(responseCode = "404", description = "Rental not found by given id",
+                            content = {@Content(mediaType = "application/json", schema = @Schema(implementation = RentalNotFondException.class),
+                                    examples = @ExampleObject(value = """
+                                            {
+                                              "timestamp": "2023-10-31T12:00:00.000+00:00",
+                                              "status": 404,
+                                              "error": "Not Found",
+                                              "message": "Rental not found with id:1",
+                                              "path": "/api/rentals/1"
+                                            }""", summary = "Rental not found"))
+                            }),
+                    @ApiResponse(responseCode = "403", description = "Id Rentals not found",
+                            content = {@Content(mediaType = "application/json", schema = @Schema(implementation = RentalNotFondException.class),
+                                    examples = @ExampleObject(value = """
+                                            {
+                                              "timestamp": "2023-10-31T12:00:00.000+00:00",
+                                              "status": 403,
+                                              "error": "Id Not Found",
+                                              "message": "Id Rental not found",
+                                              "path": "/api/rentals/1"
+                                            }""", summary = "Id Rental not found"))
+                            }),
+                    @ApiResponse(responseCode = "401", description = "Unauthorized",
+                            content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ProblemDetail.class),
+                                    examples = @ExampleObject(value = """
+                                            {
+                                              "timestamp": "2023-10-31T12:00:00.000+00:00",
+                                              "status": 401,
+                                              "error": "Unauthorized",
+                                              "message": "Unauthorized User, user not logged in",
+                                              "path": "/api/rentals/1"
+                                            }""", summary = "Unauthorized User"))})
+
+            })
+    @Parameters(@Parameter(name = "id", description = "Id of Rental to be updated", example = "1", required = true,
+            schema = @Schema(type = "integer"), content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "1"))))
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Rental object that needs to be updated", required = true,
+            content = @Content(mediaType = "multipart/form-data", schema = @Schema(implementation = RentalRequestDto.class)))
     @SecurityRequirement(name = "bearerAuth")
     @PutMapping("/rentals/{id}")
     public ResponseEntity<MessageResponse> updateRentalById(@PathVariable Long id, @ModelAttribute("rental") RentalRequestDto rentalRequestDto) {
@@ -242,7 +301,51 @@ public class RentalController {
         return ResponseEntity.ok()
                 .body(messageResponse);
     }
-    @Operation(summary = "Delete Rental by ID", description = "Delete a rental by its ID.")
+
+    @Operation(summary = "Delete Rental by ID", description = "Delete a rental by its ID.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Rental updated by its id",
+                            content = {@Content(mediaType = "application/json", schema = @Schema(implementation = MessageResponse.class),
+                                    examples = @ExampleObject(value = """
+                                            {
+                                                "message": "Rental updated !"
+                                                }
+                                                """, summary = "Rental updated successfully"))
+                            }),
+                    @ApiResponse(responseCode = "404", description = "Rental not found by given id",
+                            content = {@Content(mediaType = "application/json", schema = @Schema(implementation = RentalNotFondException.class),
+                                    examples = @ExampleObject(value = """
+                                            {
+                                              "timestamp": "2023-10-31T12:00:00.000+00:00",
+                                              "status": 404,
+                                              "error": "Not Found",
+                                              "message": "Rental not found with id: 1",
+                                              "path": "/api/rentals/1"
+                                            }""", summary = "Rental not found"))
+                            }),
+                    @ApiResponse(responseCode = "403", description = "Id Rentals not found",
+                            content = {@Content(mediaType = "application/json", schema = @Schema(implementation = RentalNotFondException.class),
+                                    examples = @ExampleObject(value = """
+                                            {
+                                              "timestamp": "2023-10-31T12:00:00.000+00:00",
+                                              "status": 403,
+                                              "error": "Id Not Found",
+                                              "message": "Id Rental not found",
+                                              "path": "/api/rentals/1"
+                                            }""", summary = "Id Rental not found"))
+                            }),
+                    @ApiResponse(responseCode = "401", description = "Unauthorized",
+                            content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ProblemDetail.class),
+                                    examples = @ExampleObject(value = """
+                                            {
+                                              "timestamp": "2023-10-31T12:00:00.000+00:00",
+                                              "status": 401,
+                                              "error": "Unauthorized",
+                                              "message": "Unauthorized User, user not logged in",
+                                              "path": "/api/rentals/1"
+                                            }""", summary = "Unauthorized User"))})
+
+            })
     @SecurityRequirement(name = "bearerAuth")
     @DeleteMapping("/rentals/{id}")
     public ResponseEntity<String> deleteRental(@PathVariable Long id) {
