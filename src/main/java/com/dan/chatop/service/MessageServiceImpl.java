@@ -26,28 +26,6 @@ public class MessageServiceImpl implements IMessageService {
     private final RentalRepository rentalRepository;
 
     @Override
-    public void postMessage(Message message) {
-        messageRepository.save(message);
-    }
-
-    @Override
-    public Message getMessageById(Long id) {
-        return messageRepository.findById(id).get();
-    }
-
-    @Override
-    public void deleteMessage(Long id) {
-        messageRepository.deleteById(id);
-    }
-
-    @Override
-    public void updateMessageById(Long id, Message message) {
-        Message messageToUpdate = messageRepository.findById(id).get();
-        messageToUpdate.setMessage(message.getMessage());
-        messageRepository.save(messageToUpdate);
-    }
-
-    @Override
     public void sendMessage(MessageDto messageDto) {
         Optional<User> user = userRepository.findById(messageDto.getUser_id());
         Optional<Rental> rental = rentalRepository.findById(messageDto.getRental_id());

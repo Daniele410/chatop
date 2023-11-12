@@ -137,7 +137,7 @@ public class AuthenticationController {
             }""", summary = "User login Authentication Example"))
     )
     @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody AuthenticationRequest request) {
+    public ResponseEntity<?> login(@RequestBody AuthenticationRequest request) {
         Optional<User> userEmail = userRepository.findByEmail(request.getEmail());
         if (!userEmail.isPresent()) {
             if (request.getEmail() == null || request.getPassword() == null || request.getEmail().isEmpty() || request.getPassword().isEmpty()) {
@@ -150,6 +150,5 @@ public class AuthenticationController {
 
         return new ResponseEntity<>(authenticationService.authenticate(request), OK);
     }
-
 
 }
