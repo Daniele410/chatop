@@ -102,13 +102,14 @@ public class RentalController {
         String userEmail = authenticationService.getAuthenticatedUserEmail();
         List<Rental> rentals = rentalService.getAllRentals();
         if (userEmail == null) {
+            log.error("Unauthorized User, user not logged in");
             return ResponseEntity.badRequest().build();
         }
         log.info("get all rentals");
         return ResponseEntity.ok(new RentalListDto(rentals));
     }
 
-    @Operation(summary = "Get a rental by its id", description = "Get a rental by its id",
+    @Operation(summary = "Get a rental by id", description = "Get a rental by id",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Rental retrieved successfully",
                             content ={@Content(mediaType = "application/json", schema = @Schema(implementation = RentalSimple.class),
@@ -167,8 +168,10 @@ public class RentalController {
         String userEmail = authenticationService.getAuthenticatedUserEmail();
 
         if (userEmail == null) {
+            log.error("Unauthorized User, user not logged in");
             return ResponseEntity.badRequest().build();
         }
+        log.info("get rental by id");
         RentalSimple rentalDto = rentalService.getRentalById(id);
         return ResponseEntity.ok()
                 .body(rentalDto);
@@ -237,13 +240,14 @@ public class RentalController {
     public ResponseEntity<MessageResponse> createRental(@ModelAttribute RentalDto rentalDto) {
         String userEmail = authenticationService.getAuthenticatedUserEmail();
         if (userEmail == null) {
+            log.error("Unauthorized User, user not logged in");
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         log.info("Adding new rental");
         return new ResponseEntity<>(rentalService.createRental(rentalDto), CREATED);
     }
 
-    @Operation(summary = "Update a rental by its id", description = "Update a rental by its id",
+    @Operation(summary = "Update a rental by id", description = "Update a rental by id",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Rental updated by its id",
                             content = {@Content(mediaType = "application/json", schema = @Schema(implementation = MessageResponse.class),
@@ -275,14 +279,14 @@ public class RentalController {
                                               "path": "/api/rentals/1"
                                             }""", summary = "Id Rental not found"))
                             }),
-                    @ApiResponse(responseCode = "401", description = "Unauthorized",
+                    @ApiResponse(responseCode = "400", description = "Unauthorized",
                             content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ProblemDetail.class),
                                     examples = @ExampleObject(value = """
                                             {
                                               "timestamp": "2023-10-31T12:00:00.000+00:00",
-                                              "status": 401,
-                                              "error": "Unauthorized",
-                                              "message": "Unauthorized User, user not logged in",
+                                              "status": 400,
+                                              "error": "BAD_REQUEST",
+                                              "message": "Fields cannot be null or empty",
                                               "path": "/api/rentals/1"
                                             }""", summary = "Unauthorized User"))})
 
@@ -295,6 +299,11 @@ public class RentalController {
     @PutMapping("/rentals/{id}")
     public ResponseEntity<MessageResponse> updateRentalById(@PathVariable Long id, @ModelAttribute("rental") RentalRequestDto rentalRequestDto) {
 
+        if(rentalRequestDto.getName() == null || rentalRequestDto.getName().isEmpty() || rentalRequestDto.getSurface() == null || rentalRequestDto.getSurface() == 0
+                || rentalRequestDto.getPrice() == null || rentalRequestDto.getPrice() == 0 || rentalRequestDto.getDescription() == null || rentalRequestDto.getDescription().isEmpty()) {
+          log.error("Fields cannot be null or empty");
+            return new ResponseEntity<>(new MessageResponse("Fields cannot be null or empty"), BAD_REQUEST);
+        }
         MessageResponse messageResponse = rentalService.updateRental(id, rentalRequestDto);
 
         log.info("Rental updated successfully with id:{}", id);
@@ -304,11 +313,11 @@ public class RentalController {
 
     @Operation(summary = "Delete Rental by ID", description = "Delete a rental by its ID.",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Rental updated by its id",
+                    @ApiResponse(responseCode = "200", description = "Rental deleted by its id",
                             content = {@Content(mediaType = "application/json", schema = @Schema(implementation = MessageResponse.class),
                                     examples = @ExampleObject(value = """
                                             {
-                                                "message": "Rental updated !"
+                                                "message": "Rental with id {} was deleted"
                                                 }
                                                 """, summary = "Rental updated successfully"))
                             }),
@@ -319,7 +328,7 @@ public class RentalController {
                                               "timestamp": "2023-10-31T12:00:00.000+00:00",
                                               "status": 404,
                                               "error": "Not Found",
-                                              "message": "Rental not found with id: 1",
+                                              "message": "Rental with id 1 was not present in database",
                                               "path": "/api/rentals/1"
                                             }""", summary = "Rental not found"))
                             }),
@@ -348,12 +357,16 @@ public class RentalController {
             })
     @SecurityRequirement(name = "bearerAuth")
     @DeleteMapping("/rentals/{id}")
-    public ResponseEntity<String> deleteRental(@PathVariable Long id) {
+    public ResponseEntity<MessageResponse> deleteRental(@PathVariable Long id) {
         if (!rentalService.existsById(id)) {
-            return new ResponseEntity<>("Rental with id " + id + " was not present in database", NOT_FOUND);
+            MessageResponse messageResponseError = new MessageResponse("Rental with id " + id + " was not present in database");
+            log.error("Rental with id {} was not present in database", id);
+            return new ResponseEntity<>(messageResponseError, NOT_FOUND);
         } else {
             rentalService.deleteRental(id);
-            return new ResponseEntity<>("Rental with id " + id + " was deleted", OK);
+            MessageResponse messageResponse = new MessageResponse("Rental with id " + id + " was deleted");
+            log.info("Rental with id {} was deleted", id);
+            return new ResponseEntity<>(messageResponse, OK);
         }
     }
 
